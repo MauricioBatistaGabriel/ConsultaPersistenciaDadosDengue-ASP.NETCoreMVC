@@ -1,0 +1,59 @@
+﻿@model List<DadosDengueModel>
+
+@{
+    ViewData["Title"] = "Consulta Dados Dengue";
+}
+
+<h2 class="title">Dados de Dengue dos Últimos 6 Meses</h2>
+
+<form method="post" asp-action="AtualizaDadosDengue">
+    <button type="submit" class="btn btn-primary">Atualizar Dados da Dengue</button>
+</form>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Semana Epidemiológica</th>
+                <th>Casos Estimados</th>
+                <th>Casos Notificados</th>
+                <th>Nível de Alerta</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@FormatarSemanaEpidemiologica(@item.se)</td>
+                    <td>@item.casos_est</td>
+                    <td>@item.casos</td>
+                    <td>@item.nivel</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Nenhum dado disponível.</p>
+}
+
+<style>
+    .title{
+        margin-bottom: 30px;
+    }
+    .btn{
+        margin-bottom:10px;
+    }
+</style>
+
+@functions {
+    private string FormatarSemanaEpidemiologica(int se)
+    {
+        string seStr = se.ToString();
+        string ano = seStr.Substring(0, 4);
+        string semana = seStr.Substring(4, 2);
+        return $"{ano}-{semana}";
+    }
+}
